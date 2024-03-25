@@ -61,6 +61,7 @@ pipeline {
                 ok "Yes! We Should"
             }
             steps {
+		slackSend channel: 'jenkins-channel', message: 'Waiting for User Input for Prod Deployment'
                 echo "Continue Or Not"
             }
         }
