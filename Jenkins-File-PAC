@@ -3,7 +3,17 @@ pipeline {
     tools {
         maven 'Maven'
     }
+    // environment {
+    //     JAVA_HOME = '/usr/local/opt/openjdk/bin/java'
+    // }
     stages {
+        // stage('Edit File') {
+        //     steps {
+        //         script {
+        //             def filePath = '/usr/local/opt/openjdk/bin/java'
+        //         }
+        //     }
+        // }
         stage('Test') {
             options {
                 timestamps()
@@ -31,7 +41,7 @@ pipeline {
             }
             steps {
                 // deploye on container -> plugin
-                deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090/')], contextPath: '/pipeline-app', war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090')], contextPath: '/pipeline-app', war: '**/*.war'
                 echo 'Deploying In Test'
                 echo "Test Deployment Completed"
             }
@@ -42,7 +52,7 @@ pipeline {
             }
             steps {
                 // deploye on container -> plugin
-                deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090/')], contextPath: '/pipeline-prod-app', war: '**/*.war'
+                deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090')], contextPath: '/pipeline-prod-app', war: '**/*.war'
                 echo 'Deploying In Prod'
                 echo "Prod Deployment Completed"
             }
@@ -60,4 +70,3 @@ pipeline {
         }
     }
 }
-
