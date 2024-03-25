@@ -3,9 +3,9 @@ pipeline {
     tools {
         maven 'Maven'
     }
-    // environment {
-    //     JAVA_HOME = '/usr/local/opt/openjdk/bin/java'
-    // }
+     environment {
+         username = 'Sandeep Sharma'
+    }
     stages {
         // stage('Edit File') {
         //     steps {
@@ -19,7 +19,7 @@ pipeline {
                 timestamps()
             }
             steps {
-		slackSend channel: 'jenkins-channel', message:'Test Started By: ${currentBuild.causes[0].userName}'
+		slackSend channel: 'jenkins-channel', message:'Test Started By: ${username}'
                 sh "mvn test"
                 sh "mvn --version"
                 echo 'Testing Code'
