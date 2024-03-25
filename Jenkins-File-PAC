@@ -19,10 +19,12 @@ pipeline {
                 timestamps()
             }
             steps {
+		slackSend channel: 'jenkins-channel', message:'Test Started'
                 sh "mvn test"
                 sh "mvn --version"
                 echo 'Testing Code'
                 echo "Testing Done"
+		slackSend channel: 'jenkins-channel', message: 'Test Completed'
             }
         }
         stage('Build') {
@@ -30,9 +32,11 @@ pipeline {
                 timestamps()
             }
             steps {
+		slackSend channel: 'jenkins-channel', message: 'Build Started'
                 sh "mvn package"
                 echo 'Making Build'
                 echo "Build Prepared"
+		slackSend channel: 'jenkins-channel', message: 'Build Completed'
             }
         }
         stage('Deploy In Test') {
@@ -40,10 +44,12 @@ pipeline {
                 timestamps()
             }
             steps {
+		slackSend channel: 'jenkins-channel', message: 'Deployment In Test Started'
                 // deploye on container -> plugin
                 deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090')], contextPath: '/pipeline-app', war: '**/*.war'
                 echo 'Deploying In Test'
                 echo "Test Deployment Completed"
+		slackSend channel: 'jenkins-channel', message: 'Deployment In Test Completed'
             }
         }
         stage('User Input To Continue Next Stage') {
@@ -63,10 +69,12 @@ pipeline {
                 timestamps()
             }
             steps {
+		slackSend channel: 'jenkins-channel', message: 'Deployment In Prod Started'
                 // deploye on container -> plugin
                 deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090')], contextPath: '/pipeline-prod-app', war: '**/*.war'
                 echo 'Deploying In Prod'
                 echo "Prod Deployment Completed"
+		slackSend channel: 'jenkins-channel', message: 'Deploymnet In Prod Completed'
             }
         }
     }
@@ -76,9 +84,11 @@ pipeline {
         }
         success {
             echo "Running Post Actions On Success"
+		slackSend channel: 'jenkins-channel', message: 'Deployment Success'
         }
         failure {
             echo "Running Post Actions On Failure"
+		slackSend channel: 'jenkins-channel', message: 'Deployment Failure'
         }
     }
 }
