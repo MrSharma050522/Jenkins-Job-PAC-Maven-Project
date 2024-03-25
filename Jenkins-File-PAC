@@ -19,7 +19,7 @@ pipeline {
                 timestamps()
             }
             steps {
-		slackSend channel: 'jenkins-channel', message:'Test Started By: ${username}'
+		slackSend channel: 'jenkins-channel', message: "Test Started By: ${currentBuild.causes[0].userName}"
                 sh "mvn test"
                 sh "mvn --version"
                 echo 'Testing Code'
