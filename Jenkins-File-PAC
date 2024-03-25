@@ -19,7 +19,7 @@ pipeline {
                 timestamps()
             }
             steps {
-		slackSend channel: 'jenkins-channel', message:'Test Started'
+		slackSend channel: 'jenkins-channel', message:'Test Started By: ${currentBuild.causes[0].userName}'
                 sh "mvn test"
                 sh "mvn --version"
                 echo 'Testing Code'
@@ -61,7 +61,7 @@ pipeline {
                 ok "Yes! We Should"
             }
             steps {
-		slackSend channel: 'jenkins-channel', message: 'Waiting for User Input for Prod Deployment'
+		slackSend channel: 'jenkins-channel', message: 'Confirmation Received for Prod Deployment'
                 echo "Continue Or Not"
             }
         }
