@@ -3,14 +3,17 @@ pipeline {
     tools {
         maven 'Maven'
     }
+    environment {
+        JAVA_HOME = '/usr/local/opt/openjdk/bin/java'
+    }
     stages {
-        stage('Edit File') {
-            steps {
-                script {
-                    def filePath = '/usr/local/opt/openjdk/bin/java'
-                }
-            }
-        }
+        // stage('Edit File') {
+        //     steps {
+        //         script {
+        //             def filePath = '/usr/local/opt/openjdk/bin/java'
+        //         }
+        //     }
+        // }
         stage('Test') {
             options {
                 timestamps()
