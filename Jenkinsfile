@@ -1,57 +1,62 @@
 pipeline {
     agent any
-     tools {
-        maven 'Maven' 
-        }
+    tools {
+        maven 'Maven'
+    }
     stages {
-        stage("Test"){
-            steps{
-                // mvn test
+        stage('Test') {
+            options {
+                timestamps()
+            }
+            steps {
                 sh "mvn test"
-                slackSend channel: 'youtubejenkins', message: 'Job Started'
-                
+                sh "mvn --version"
+                echo 'Testing Code'
+                echo "Testing Done"
             }
-            
         }
-        stage("Build"){
-            steps{
+        stage('Build') {
+            options {
+                timestamps()
+            }
+            steps {
                 sh "mvn package"
-                
+                echo 'Making Build'
+                echo "Build Prepared"
             }
-            
         }
-        stage("Deploy on Test"){
-            steps{
-                // deploy on container -> plugin
-                deploy adapters: [tomcat9(credentialsId: 'tomcatserverdetails1', path: '', url: 'http://192.168.0.118:8080')], contextPath: '/app', war: '**/*.war'
-              
+        stage('Deploy In Test') {
+            options {
+                timestamps()
             }
-            
+            steps {
+                // deploye on container -> plugin
+                deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090')], contextPath: '/pipeline-app', war: '**/*.war'
+                echo 'Deploying In Test'
+                echo "Test Deployment Completed"
+            }
         }
-        stage("Deploy on Prod"){
-             input {
-                message "Should we continue?"
-                ok "Yes we Should"
+        stage('Deploy In Prod') {
+            options {
+                timestamps()
             }
-            
-            steps{
-                // deploy on container -> plugin
-                deploy adapters: [tomcat9(credentialsId: 'tomcatserverdetails1', path: '', url: 'http://192.168.0.119:8080')], contextPath: '/app', war: '**/*.war'
-
+            steps {
+                // deploye on container -> plugin
+                deploy adapters: [tomcat9(credentialsId: 'Tomcat Admin', path: '', url: 'http://localhost:8090')], contextPath: '/pipeline-prod-app', war: '**/*.war'
+                echo 'Deploying In Prod'
+                echo "Prod Deployment Completed"
             }
         }
     }
     post{
-        always{
-            echo "========always========"
+        always {
+            echo "Running Post Actions Always"
         }
-        success{
-            echo "========pipeline executed successfully ========"
-             slackSend channel: 'youtubejenkins', message: 'Success'
+        success {
+            echo "Running Post Actions On Success"
         }
-        failure{
-            echo "========pipeline execution failed========"
-             slackSend channel: 'youtubejenkins', message: 'Job Failed'
+        failure {
+            echo "Running Post Actions On Failure"
         }
     }
 }
