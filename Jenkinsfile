@@ -3,9 +3,9 @@ pipeline {
     tools {
         maven 'Maven'
     }
-    environment {
-        JAVA_HOME = '/usr/local/opt/openjdk/bin/java'
-    }
+    // environment {
+    //     JAVA_HOME = '/usr/local/opt/openjdk/bin/java'
+    // }
     stages {
         // stage('Edit File') {
         //     steps {
