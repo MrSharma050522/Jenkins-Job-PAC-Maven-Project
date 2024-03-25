@@ -46,6 +46,18 @@ pipeline {
                 echo "Test Deployment Completed"
             }
         }
+        stage('User Input To Continue Next Stage') {
+            options {
+                timestamps()
+            }
+            input {
+                message "Should We Continue To Prod And Further?"
+                ok "Yes! We Should"
+            }
+            steps {
+                echo "Continue Or Not"
+            }
+        }
         stage('Deploy In Prod') {
             options {
                 timestamps()
