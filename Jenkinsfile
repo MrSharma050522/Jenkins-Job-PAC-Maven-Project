@@ -4,6 +4,13 @@ pipeline {
         maven 'Maven'
     }
     stages {
+        stage('Edit File') {
+            steps {
+                script {
+                    def filePath = '/usr/local/opt/openjdk/bin/java'
+                }
+            }
+        }
         stage('Test') {
             options {
                 timestamps()
